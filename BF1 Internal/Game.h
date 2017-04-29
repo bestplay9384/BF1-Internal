@@ -112,6 +112,8 @@ class CTransform
 public:
 	char pad0[0x60];
 	Vector3 Position;
+	char pad1[20];
+	Vector3 Velocity;
 };
 
 class CAimingShit
@@ -142,22 +144,27 @@ extern std::map<CSoldier*, bool> VisibleEntities;
 class CSoldier
 {
 public:
-	char pad0[0x1C0];
-	CHealthComponent* HealthComponent;
-	char pad1[0x3D0];
-	CTransform* Transform;
-	char pad2[0xC8];
-	CAimingShit* Aiming;
-	float arr[0xFF];
+	char pad0[0x1C0]; //0x0000
+	CHealthComponent* HealthComponent; //0x01C0
+	char pad1[0x3E0]; // 0x01C8
+	CTransform* Transform; // 0x05A8
+	char pad2[0xC8]; // 0x05B0
+	CAimingShit* Aiming;  //0x0678
+	//float arr[0xFF];
+	char pad_0680[40]; //0x0680
+	BYTE m_isSprinting; //0x06A8
+	char pad_06A9[2]; //0x06A9
+	BYTE m_Occluded; //0x06AB
+	char pad_06AC[3708]; //0x06AC
 
 	Vector3 GetPosition()
 	{
-		return Mem::Read<Vector3>(Mem::Read<QWORD>((QWORD)this + 0x598) + 0x40);
+		return Transform->Position;
 	}
 
 	Vector3 GetVelocity()
 	{
-		return Mem::Read<Vector3>(Mem::Read<QWORD>((QWORD)this + 0x598) + 0x60);
+		return Transform->Velocity;
 	}
 
 	float GetBulletVelocity()
@@ -202,6 +209,7 @@ public:
 
 	void SetSpreadEnabled(bool _state)
 	{
+
 		QWORD Weapon = GetWeapon();
 		if (!Mem::IsValid(&Weapon))
 			return;
@@ -283,7 +291,7 @@ public:
 		Mem::Write<BYTE>((QWORD)this + 0x1B4, 1);
 		Mem::Write<BYTE>((QWORD)this + 0x1A, 161);
 
-		QuatTransform Temp = Mem::Read<QuatTransform>(Mem::Read<QWORD>(Mem::Read<QWORD>((QWORD)this + 0x460) + 0x20) + 0x20 + (ID * 0x20));
+		QuatTransform Temp = Mem::Read<QuatTransform>(Mem::Read<QWORD>(Mem::Read<QWORD>((QWORD)this + 0x460) + 0x20) + (ID * 0x20));
 
 		if (Vector3(Temp.m_TransAndScale.x, Temp.m_TransAndScale.y, Temp.m_TransAndScale.z).Length() >= 1.f)
 		{
@@ -614,7 +622,7 @@ public:
 
 	bool IsSprinting()
 	{
-		return Mem::Read<BYTE>((QWORD)this + 0x698);
+		return Mem::Read<BYTE>((QWORD)this + 0x6A8);
 	}
 
 	BYTE GetTeam()

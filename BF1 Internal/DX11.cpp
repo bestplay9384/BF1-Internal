@@ -18,21 +18,29 @@ CVMTHookManager64* pfh;
 
 int __stdcall HookedPerFrame(uintptr_t _this, float a1)
 {
+	std::ofstream outputFile;
+	outputFile.open(L"C:\\Users\\bestp\\Desktop\\log.log");
 	CEntity* LocalPlayer = Game::GetLocalPlayer();
+	outputFile <<"start"<< std::endl;
 	if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
 	{
+		outputFile << "LocalPlayer ok" << std::endl;
 		CSoldier* LPSoldier = LocalPlayer->GetSoldier();
 		if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->Transform)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
 		{
+			outputFile << "LocalPlayer->GetSoldier() ok" << std::endl;
 			CEntityList* EntityList = Game::GetEntityList();
 
 			if (Mem::IsValid(EntityList))
 			{
+				outputFile << "LocalPlayer->GetSoldier()->anotherPlayers ok" << std::endl;
 				for (int i = 0; i < 64; i++)
 				{
 					CEntity* Ent = EntityList->GetEntity(i);
+					outputFile << Ent << std::endl;
 					if (Mem::IsValid(Ent))
 					{
+						outputFile << Ent->Name << std::endl;
 						CSoldier* EntSoldier = Ent->GetSoldier();
 						if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && EntSoldier->HealthComponent->HP >= 1.f && EntSoldier->HealthComponent->HP <= 100.f)
 						{
@@ -55,10 +63,11 @@ int __stdcall HookedPerFrame(uintptr_t _this, float a1)
 						}
 					}
 				}
+				
 			}
 		}
 	}
-
+	outputFile.close();
 	return PerFrameHook(_this, a1);
 }
 
@@ -85,7 +94,7 @@ void DX11Renderer::DX11RenderScene()
 							static bool MainMenu = true;
 							static bool LogOpened = true;
 							ImGui::SetNextWindowPos(ImVec2(0, 0));
-							if (ImGui::Begin("BF1 Hack by Tonyx97 - UnKnoWnCheaTs", &MainMenu, ImVec2(450, ScreenSY / 2), 0.4f, ImGuiWindowFlags_NoSavedSettings))
+							if (ImGui::Begin(("BF! Hack - " + std::string(LocalPlayer->Name)).c_str(), &MainMenu, ImVec2(450, ScreenSY / 2), 0.4f, ImGuiWindowFlags_NoSavedSettings))
 							{
 								ImGui::TextColored(SSCleaner->BitBltState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "BB: %s", SSCleaner->BitBltState ? "Yes" : "No");
 								/*ImGui::TextColored(SSCleaner->CopyResourceState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "CR: %s", SSCleaner->CopyResourceState ? "Yes" : "No");
@@ -164,9 +173,9 @@ void DX11Renderer::DX11RenderScene()
 
 							//PLAYERS
 							CEntityList* EntityList = Game::GetEntityList();
-							/*ClientPlayerManager* PlayerManager = Game::GetClientPlayerManager();
+							ClientPlayerManager* PlayerManager = Game::GetClientPlayerManager();
 
-							if (Mem::IsValid(PlayerManager))
+							/*if (Mem::IsValid(PlayerManager))
 							{
 								CSpectatorList* SpectatorList = PlayerManager->GetSpectators();
 								if (Mem::IsValid(SpectatorList))
@@ -190,21 +199,36 @@ void DX11Renderer::DX11RenderScene()
 								}
 							}*/
 
-
 							if (Mem::IsValid(EntityList))
 							{
+								std::ofstream outputFile;
+								outputFile.open(L"C:\\Users\\bestp\\Desktop\\log_ESP.log");
+								outputFile << "start" << std::endl;
 								for (int i = 0; i < 64; i++)
 								{
+									outputFile << i << " ===== " << std::endl;
+
 									CEntity* Ent = EntityList->GetEntity(i);
 									if (Mem::IsValid(Ent))
 									{
 										CSoldier* EntSoldier = Ent->GetSoldier();
+										outputFile << "CEntity->getSoldier() -- ok" << std::endl;
+										outputFile << "Is CSoldier valid: " << Mem::IsValid(EntSoldier) << std::endl;
+										if (Mem::IsValid(EntSoldier)) {
+											outputFile << "Soldier Name: " << Ent->Name << std::endl;
+											outputFile << "Is HealthComponent valid: " << Mem::IsValid(EntSoldier->HealthComponent) << std::endl;
+											if (Mem::IsValid(EntSoldier->HealthComponent)) {
+												outputFile << "HealthComponent HP: " <<  EntSoldier->HealthComponent->HP << std::endl;
+											}
+										}
+
 										if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && EntSoldier->HealthComponent->HP >= 1.f && EntSoldier->HealthComponent->HP <= 100.f)
 										{
 											Vector3 HeadPos;
 											if (!EntSoldier->GetBonePosition(HeadPos, 53))
 												continue; 
 											HeadPos = EntSoldier->GetPosition() + Vector3(0.f, 2.f, 0.f);
+											outputFile << "HEAD: " << HeadPos.x << " " << HeadPos.y << " " << HeadPos.z << std::endl;
 
 											Vector3 FeetPos = EntSoldier->GetPosition();
 											Vector3 HeadSP;
@@ -438,6 +462,7 @@ void DX11Renderer::DX11RenderScene()
 										}
 									}
 								}
+								outputFile.close();
 							}
 						}
 					}
