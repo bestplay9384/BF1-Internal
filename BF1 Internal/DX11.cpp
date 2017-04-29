@@ -462,7 +462,7 @@ HRESULT HookedDX11Renderer(IDXGISwapChain* _SwapChain, UINT SyncInterval, UINT F
 	return DX11HookPresent(_SwapChain, SyncInterval, Flags);
 }
 
-DWORD DX11Renderer::InitDevice(HMODULE _DllModule, const char* HWNDTarget)
+DWORD DX11Renderer::InitDevice(HMODULE _DllModule, const wchar_t* HWNDTarget)
 {
 	while (true)
 	{

@@ -16,7 +16,7 @@ public:
 
 	static BOOLEAN KeysPressed[256];
 
-	static void Initialize(const char* Target);
+	static void Initialize(const wchar_t* Target);
 	static void Restore();
 
 	static void HooksInput();

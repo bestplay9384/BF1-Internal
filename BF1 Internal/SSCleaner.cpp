@@ -52,7 +52,7 @@ void hkCopySubresourceRegion(ID3D11DeviceContext* device_context, ID3D11Resource
 bool CSSCleaner::HookBitBlt()
 {
 	BitBltHook = new PLH::VEHHook();
-	BitBltHook->SetupHook((BYTE*)(GetProcAddress(GetModuleHandle("gdi32.dll"), "BitBlt")), (BYTE*)hkBitBlt, PLH::VEHHook::VEHMethod::INT3_BP);
+	BitBltHook->SetupHook((BYTE*)(GetProcAddress(GetModuleHandle(L"gdi32.dll"), "BitBlt")), (BYTE*)hkBitBlt, PLH::VEHHook::VEHMethod::INT3_BP);
 	BitBltState = BitBltHook->Hook();
 	oBitBlt = BitBltHook->GetOriginal<BitBlt_t>();
 	/*if (BitBltState)

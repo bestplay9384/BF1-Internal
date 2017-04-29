@@ -122,7 +122,7 @@ private:
 
 	HMODULE DllModule = NULL;
 
-	const char* Target;
+	const wchar_t* Target;
 
 	BOOLEAN RestoreState = FALSE;
 	BOOLEAN Initialized = FALSE;
@@ -154,7 +154,7 @@ public:
 
 	HWND WTarget;
 
-	DWORD InitDevice(HMODULE _DllModule, const char* HWNDTarget);
+	DWORD InitDevice(HMODULE _DllModule, const wchar_t* HWNDTarget);
 	BOOLEAN InitDX11RenderStuff(IDXGISwapChain* _SwapChain);
 
 	void DX11RenderScene();

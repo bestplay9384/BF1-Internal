@@ -16,7 +16,7 @@ void Init()
 	SSCleaner.reset(new CSSCleaner());
 	Log.reset(new CLog());
 	DX11.reset(new DX11Renderer());
-	DX11->InitDevice(mod, "Battlefield™ 1");
+	DX11->InitDevice(mod, L"Battlefield™ 1");
 
 	if (dbg)
 		ShowWindow(GetConsoleWindow(), SW_HIDE);

@@ -110,7 +110,7 @@ public:
 class CTransform
 {
 public:
-	char pad0[0x30];
+	char pad0[0x60];
 	Vector3 Position;
 };
 
@@ -609,7 +609,7 @@ public:
 
 	BYTE IsOccluded()
 	{
-		return Mem::Read<BYTE>((QWORD)this + 0x699);
+		return Mem::Read<BYTE>((QWORD)this + 0x06AB);
 	}
 
 	bool IsSprinting()

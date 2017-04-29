@@ -7,7 +7,7 @@ WNDPROC OldWndProc = nullptr;
 HWND IHooks::tWindow = nullptr;
 BOOLEAN IHooks::KeysPressed[256] = { FALSE };
 
-void IHooks::Initialize(const char* Target)
+void IHooks::Initialize(const wchar_t* Target)
 {
 	tWindow = FindWindow(0, Target);
 	if (tWindow) OldWndProc = (WNDPROC)SetWindowLongPtr(tWindow, GWLP_WNDPROC, (LONG_PTR)HookedWndProc);

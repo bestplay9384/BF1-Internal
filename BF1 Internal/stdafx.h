@@ -52,9 +52,7 @@
 #include <thread>
 #include <map>
 #include <glm/glm.hpp>
-
-#include <Capstone\capstone.h>
-
+#include <Capstone/include/capstone.h>
 
 #include "imgui.h"
 #define IMGUI_DEFINE_MATH_OPERATORS

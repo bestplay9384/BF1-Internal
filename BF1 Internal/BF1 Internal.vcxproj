@@ -22,7 +22,7 @@
     <ProjectGuid>{B6F897BA-EB9E-49BA-9E17-3A9A12FB878F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BF1Internal</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,17 +39,17 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -74,13 +74,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\bestp\Desktop\git\PolyHook;C:\Users\bestp\Downloads\glm-0.9.8.4;C:\Users\bestp\Desktop\git\DirectXTK\Inc;$(DXSDK_DIR)Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\bestp\Desktop\git\PolyHook\Capstone\msvc\x64\Release;C:\Users\bestp\Desktop\git\DirectXTK\Bin\Desktop_2017_Win10\x64\Release\;$(DXSDK_DIR)Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>F:\X Stuff\Herramientas y Programas\Hacks\Battlefields\BF1 Internal\x64\Release\</OutDir>
+    <OutDir>C:\Users\bestp\Desktop\git\BF1-Internal\BF1 Internal\x64\Release\</OutDir>
+    <IncludePath>C:\Users\bestp\Desktop\git\PolyHook;C:\Users\bestp\Downloads\glm-0.9.8.4;C:\Users\bestp\Desktop\git\DirectXTK\Inc;$(DXSDK_DIR)Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\bestp\Desktop\git\PolyHook\Capstone\msvc\x64\Release;C:\Users\bestp\Desktop\git\DirectXTK\Bin\Desktop_2017_Win10\x64\Release\;$(DXSDK_DIR)Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,7 +141,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>No</GenerateDebugInformation>
-      <OutputFile>F:\X Stuff\Herramientas y Programas\Hacks\Battlefields\BF1 Internal\x64\Release\BF1 Internal.dll</OutputFile>
+      <OutputFile>C:\Users\bestp\Desktop\git\BF1-Internal\BF1 Internal\x64\Release\BF1 Internal.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
