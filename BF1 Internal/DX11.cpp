@@ -18,56 +18,6 @@ CVMTHookManager64* pfh;
 
 int __stdcall HookedPerFrame(uintptr_t _this, float a1)
 {
-	std::ofstream outputFile;
-	outputFile.open(L"C:\\Users\\bestp\\Desktop\\log.log");
-	CEntity* LocalPlayer = Game::GetLocalPlayer();
-	outputFile <<"start"<< std::endl;
-	if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
-	{
-		outputFile << "LocalPlayer ok" << std::endl;
-		CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-		if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->Transform)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
-		{
-			outputFile << "LocalPlayer->GetSoldier() ok" << std::endl;
-			CEntityList* EntityList = Game::GetEntityList();
-
-			if (Mem::IsValid(EntityList))
-			{
-				outputFile << "LocalPlayer->GetSoldier()->anotherPlayers ok" << std::endl;
-				for (int i = 0; i < 64; i++)
-				{
-					CEntity* Ent = EntityList->GetEntity(i);
-					outputFile << Ent << std::endl;
-					if (Mem::IsValid(Ent))
-					{
-						outputFile << Ent->Name << std::endl;
-						CSoldier* EntSoldier = Ent->GetSoldier();
-						if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && EntSoldier->HealthComponent->HP >= 1.f && EntSoldier->HealthComponent->HP <= 100.f)
-						{
-							Vector3 Pos;
-							if (EntSoldier->GetBonePosition(Pos, Aimbot::Bone))
-							{
-								RayCaster* Raycast = RayCaster::Get();
-								if (Mem::IsValid(Raycast))
-								{
-									RayCastHit Hit;
-									Vector3 LocalPos = LPSoldier->GetShootSpace() + Vector3(0.f, 0.f, 0.f);
-
-									__declspec(align(16)) Vector4 From = LocalPos;
-									__declspec(align(16)) Vector4 To = Pos;
-
-									bool visible = Raycast->PhysicsRayQuery("VCs", &From, &To, &Hit, (0x4 | 0x10 | 0x20 | 0x80), NULL);
-									VisibleEntities[EntSoldier] = !visible;
-								}
-							}
-						}
-					}
-				}
-				
-			}
-		}
-	}
-	outputFile.close();
 	return PerFrameHook(_this, a1);
 }
 
@@ -166,7 +116,7 @@ void DX11Renderer::DX11RenderScene()
 					if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
 					{
 						CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-						if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->Transform)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
+						if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
 						{
 							if (Features::ShowFOV)
 								DrawCircle(ScreenSX / 2.f, ScreenSY / 2.f, Color(0, 255, 255, 255), Aimbot::FOV, 25);
@@ -247,7 +197,8 @@ void DX11Renderer::DX11RenderScene()
 												if (Ent->GetTeam() != LocalPlayer->GetTeam())
 												{
 													Enemy = true;
-													if (VisibleEntities[EntSoldier])
+
+													if(!EntSoldier->m_Occluded) // czy go widac?
 													{
 														Visible = true;
 														BoxColor = Color(0, 255, 0, 255);

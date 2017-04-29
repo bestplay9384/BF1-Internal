@@ -27,6 +27,7 @@ public:
 
 };
 
+
 enum eBones
 {
 	HEAD = 62, //
@@ -107,7 +108,7 @@ public:
 	float HP;
 };
 
-class CTransform
+class ClientSoldierPrediction
 {
 public:
 	char pad0[0x60];
@@ -116,10 +117,14 @@ public:
 	Vector3 Velocity;
 };
 
-class CAimingShit
-{
+class ClientAimEntity {
 public:
-
+	/*char _0x0000[40];
+	AimEntityData* m_pAimEntityData; //0x0028 [AimEntityData]
+	char _0x0030[368];
+	CSoldierEntity* m_pClientSoldierEntity; //0x01A0 [ClientSoldierEntity]
+	ClientSoldierAimingSimulation* m_authorativeAiming; //0x01A8 
+	char _0x01B0[1680];*/
 };
 
 struct SwayDataSaved
@@ -139,7 +144,78 @@ struct BulletDataSaved
 
 extern std::map<QWORD, SwayDataSaved> SwayData;
 extern std::map<QWORD, BulletDataSaved> BulletData;
-extern std::map<CSoldier*, bool> VisibleEntities;
+//extern std::map<CSoldier*, bool> VisibleEntities;
+
+class ClientWeapon {
+public:
+};
+
+class SoldierAimingSimulationData {
+public:
+};
+
+class SoldierWeaponBlueprint {
+public:
+};
+
+class GunSwayData {
+public:
+	char pad0[0x03C8];
+	float m_ShootingRecoilDecreaseScale; //0x03C8
+	float m_FirstShotNoZoomDispersionMultiplier; //0x03CC
+	float m_FirstShotZoomDispersionMultiplier; //0x03D0
+	float m_FirstShotRecoilMultiplier; //0x03D4
+	float m_PowerOfDispersionRandom; //0x03D8
+};
+
+class WeaponFiringData {
+public:
+	char _0x0000[0x38];
+	GunSwayData* gunSwayData; //0x0038 [GunSwayData]
+};//Size=0x0040
+
+class WeaponFiring {
+public:
+	char _0x0000[0x18];
+	WeaponFiringData* data;
+};//Size=0x0440
+
+class SoldierWeaponData {
+public:
+	char _0x0000[144];
+	WeaponFiringData* weaponFiringData; //0x0090 [WeaponFiringData]
+	char _0x0098[216];
+	char* m_Name; //0x0170 
+	char _0x0178[16];
+	SoldierAimingSimulationData* m_pSoldierAimingSimulationData; //0x0188 [SoldierAimingSimulationData]
+	char _0x0190[40];
+	SoldierWeaponBlueprint* m_pSoldierWeaponBlueprint; //0x01B8 [SoldierWeaponBlueprint]
+	char _0x01C0[640];
+};
+
+class ClientSoldierWeapon {
+public:
+	char _0x0000[48];
+	SoldierWeaponData* soldierWeaponData; //0x0030 [SoldierWeaponData]
+	char _0x0038[18840];
+	__int64 m_ZoomLevelData1; //0x49D0 [ZoomLevelData]
+	__int64 ZoomLevelData2; //0x49D8 [ZoomLevelData]
+	char _0x49E0[48];
+	ClientWeapon* m_pWeapon; //0x4A10 [ClientWeapon]
+	char _0x4A18[16];
+	WeaponFiring* weaponFiring; //0x4A18 
+	char _0x4A30[1552];
+
+};//Size=0x5040
+
+class ClientSoldierWeaponsComponent {
+public:
+	char _0x0000[56];
+	ClientSoldierWeapon* weapon; //0x0038 [ClientSoldierWeapon]
+	char _0x0040[24];
+	CSoldier* soldier; //0x0058 [ClientSoldierEntity]
+	char _0x0060[96];
+};
 
 class CSoldier
 {
@@ -147,70 +223,74 @@ public:
 	char pad0[0x1C0]; //0x0000
 	CHealthComponent* HealthComponent; //0x01C0
 	char pad1[0x3E0]; // 0x01C8
-	CTransform* Transform; // 0x05A8
-	char pad2[0xC8]; // 0x05B0
-	CAimingShit* Aiming;  //0x0678
-	//float arr[0xFF];
-	char pad_0680[40]; //0x0680
+	ClientSoldierPrediction* prediction; // 0x05A8
+	char pad2[0xA8]; // 0x05B0
+	ClientSoldierWeaponsComponent* weaponComponent; //0x0658 -- malo interesujacy
+	char pad33[0x18]; // 0x660
+	ClientAimEntity* aim;  //0x0678
+	ClientSoldierWeapon* weapon; // 0x0680
+	char pad_0680[0x20]; //0x0688
 	BYTE m_isSprinting; //0x06A8
 	char pad_06A9[2]; //0x06A9
 	BYTE m_Occluded; //0x06AB
-	char pad_06AC[3708]; //0x06AC
+	char pad_06AC[0x980-0x6AB]; //0x06AC
 
 	Vector3 GetPosition()
 	{
-		return Transform->Position;
+		return prediction->Position;
 	}
 
 	Vector3 GetVelocity()
 	{
-		return Transform->Velocity;
+		return prediction->Velocity;
 	}
 
 	float GetBulletVelocity()
 	{
-		return Mem::ReadPtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, false);
 	}
 
 	void SetBulletVelocity(float _vel)
 	{
-		Mem::WritePtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, _vel, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, _vel, false);
 	}
 
 	void SetBulletGravity(float _gravity)
 	{
-		Mem::WritePtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, _gravity, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, _gravity, false);
 	}
 
 	float GetBulletGravity()
 	{
-		return Mem::ReadPtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
 	}
 
 	void SetInstantHit(BYTE _state)
 	{
-		Mem::WritePtr<BYTE>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x181 }, _state, false);
+		Mem::WritePtr<BYTE>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x181 }, _state, false);
 	}
 
 	void SetTimeToLive(float _time)
 	{
-		Mem::WritePtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, _time, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, _time, false);
 	}
 
 	float GetTimeToLive()
 	{
-		return Mem::ReadPtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, false);
 	}
 
 	QWORD GetWeapon()
 	{
-		return Mem::ReadPtr<QWORD>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30 }, false);
+		//return weaponComponent->weapon->soldierWeaponData->weaponFiringData;
+		return Mem::ReadPtr<QWORD>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30 }, false);
 	}
 
 	void SetSpreadEnabled(bool _state)
 	{
 
 		QWORD Weapon = GetWeapon();
+
 		if (!Mem::IsValid(&Weapon))
 			return;
 
@@ -219,7 +299,7 @@ public:
 			for (int i = 0; i < 0xFF; i++)
 			{
 				QWORD offset = (i * 0x4);
-				SwayData[Weapon].Data.push_back(Mem::ReadPtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, false));
+				SwayData[Weapon].Data.push_back(Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, false));
 			}
 			SwayData[Weapon].enabled = true;
 		}
@@ -229,7 +309,7 @@ public:
 			for (int i = 0; i < 0xFF; i++)
 			{
 				QWORD offset = (i * 0x4);
-				Mem::WritePtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, 0.f, false);
+				Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, 0.f, false);
 			}
 		}
 		else
@@ -241,7 +321,7 @@ public:
 			{
 				QWORD offset = (i * 0x4);
 				if (SwayData[Weapon].Data[i])
-					Mem::WritePtr<float>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, SwayData[Weapon].Data[i], false);
+					Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, SwayData[Weapon].Data[i], false);
 			}
 		}
 
@@ -249,7 +329,7 @@ public:
 
 	unsigned int GetActiveSlot()
 	{
-		return Mem::ReadPtr<unsigned int>({ (QWORD)this, 0x648, 0x960 }, false);
+		return Mem::ReadPtr<unsigned int>({ (QWORD)this, 0x658, 0x960 }, false);
 	}
 
 	void SetBulletData(bool _state)
@@ -305,27 +385,27 @@ public:
 
 	Vector3 GetAngles()
 	{
-		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x668, 0x1A8, 0x28, 0x24 }, false);
+		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x678, 0x1A8, 0x28, 0x24 }, false);
 	}
 
 	BOOLEAN SetAngles(Vector3 _angles)
 	{
-		return Mem::WritePtr<Vector3>({ (QWORD)this, 0x668, 0x1A8, 0x28, 0x24 }, _angles, false);
+		return Mem::WritePtr<Vector3>({ (QWORD)this, 0x678, 0x1A8, 0x28, 0x24 }, _angles, false);
 	}
 
 	Vector3 GetShootSpace()
 	{
-		return Mem::ReadPtr<Matrix>({ (QWORD)this, 0x648, 0x900, 0x38, 0x4A18, 0x40 }, false).Translation();
+		return Mem::ReadPtr<Matrix>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A18, 0x40 }, false).Translation();
 	}
 
 	Vector3 GetSpawnOffset()
 	{
-		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x648, 0x900, 0x38, 0x30, 0x90, 0x10, 0x60 }, false);
+		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x60 }, false);
 	}
 
 	Vector3 GetInitialPosition()
 	{
-		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x648, 0x900, 0x38, 0x4A18, 0x40 }, false);
+		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A18, 0x40 }, false);
 	}
 
 	void SetChamsEnabled(BYTE btEnabled)
@@ -588,15 +668,18 @@ public:
 	}
 };
 
-class CEntity
-{
+class CEntity {
 public:
-
 	char pad0[0x40];
 	char Name[32];
+	char pad1[7124];
+	BYTE teamId; //0x1C34
+	char pad2[259];
+	CVehicleEntity* vehicle; // 0x1D38
+	char pad3[8];
+	CSoldier* soldier; //0x1D48
 
-	const char* GetName()
-	{
+	const char* GetName() {
 		std::string Name = Mem::ReadPtr<char*>({ (QWORD)this, 0x30, 0x130 }, false);
 		if (Name.size() <= 4)
 			return "";
@@ -605,50 +688,33 @@ public:
 		return Name.c_str();
 	}
 
-	CSoldier* GetSoldier()
-	{
-		return Mem::Read<CSoldier*>((QWORD)this + 0x1D48);
+	CSoldier* GetSoldier() {
+		return Mem::Read<CSoldier*>((QWORD)&soldier);
+		//return Mem::Read<CSoldier*>((QWORD)soldier);
 	}
 
-	CVehicleEntity* GetCurrentVehicle()
-	{
-		return Mem::Read<CVehicleEntity*>((QWORD)this + 0x1D38);
+	CVehicleEntity* GetCurrentVehicle() {
+		return Mem::Read<CVehicleEntity*>((QWORD)&vehicle);
+		//return Mem::Read<CVehicleEntity*>((QWORD)vehicle);
 	}
 
-	BYTE IsOccluded()
-	{
-		return Mem::Read<BYTE>((QWORD)this + 0x06AB);
+	BYTE GetTeam() {
+		return teamId;
 	}
 
-	bool IsSprinting()
-	{
-		return Mem::Read<BYTE>((QWORD)this + 0x6A8);
-	}
-
-	BYTE GetTeam()
-	{
-		return Mem::Read<BYTE>((QWORD)this + 0x1C34);
-	}
-
-	QWORD GetPlayerView()
-	{
-		return Mem::Read<QWORD>((QWORD)this + 0x1D98);
+	QWORD GetPlayerView() {
+		return Mem::Read<QWORD>((QWORD)this + 0x1D98); // TO FIX - wychodzi poza strukture CEntity
 	}
 };
 
-class CEntityList
-{
+class CEntityList {
 public:
-
-	CEntity* GetEntity(int i)
-	{
+	CEntity* GetEntity(int i) {
 		return Mem::Read<CEntity*>((QWORD)this + 0x38 + (i * 0x8));
 	}
-
 };
 
-class CSpectatorList
-{
+class CSpectatorList {
 public:
 
 	CSpectator* GetSpectator(const uint& _i)

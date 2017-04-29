@@ -20,7 +20,7 @@ float Features::ESPDistance = 999.f;
 
 std::map<QWORD, SwayDataSaved> SwayData;
 std::map<QWORD, BulletDataSaved> BulletData;
-std::map<CSoldier*, bool> VisibleEntities;
+//std::map<CSoldier*, bool> VisibleEntities;
 
 Vector3 posos;
 

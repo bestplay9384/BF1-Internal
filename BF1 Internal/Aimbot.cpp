@@ -23,7 +23,7 @@ void AimbotThread()
 		if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
 		{
 			CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-			if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->Transform) && Mem::IsValid(LPSoldier->Aiming))
+			if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction) && Mem::IsValid(LPSoldier->aim))
 			{
 				ImGuiIO& io = ImGui::GetIO();
 				unsigned int Slot = LPSoldier->GetActiveSlot();
@@ -60,7 +60,7 @@ void AimbotThread()
 			if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
 			{
 				CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-				if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->Transform) && Mem::IsValid(LPSoldier->Aiming))
+				if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction) && Mem::IsValid(LPSoldier->aim))
 				{
 					unsigned int Slot = LPSoldier->GetActiveSlot();
 					if (Slot == 0 || Slot == 1)
@@ -84,9 +84,9 @@ void AimbotThread()
 								if (Mem::IsValid(Ent))
 								{
 									CSoldier* EntSoldier = Ent->GetSoldier();
-									if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && Mem::IsValid(EntSoldier->Transform))
+									if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && Mem::IsValid(EntSoldier->prediction))
 									{
-										if (Ent->GetTeam() != LocalPlayer->GetTeam() && VisibleEntities[EntSoldier] && Aimbot::Bone >= 0 && EntSoldier->HealthComponent->HP >= 1.f)
+										if (Ent->GetTeam() != LocalPlayer->GetTeam() && !EntSoldier->m_Occluded && Aimbot::Bone >= 0 && EntSoldier->HealthComponent->HP >= 1.f)
 										{
 											static const eBones RandBones[] = { HEAD, CHEST, HIP, STOMACH, NECK, RIGHT_FEMUR, LEFT_FEMUR, LEFT_KNEE, RIGHT_KNEE };
 											if (!Aimbot::RandomBone)
