@@ -35,11 +35,11 @@ void DX11Renderer::DX11RenderScene()
 			//{
 				if (Features::ShowMenu)
 				{
-					CEntity* LocalPlayer = Game::GetLocalPlayer();
+					ClientEntity* LocalPlayer = Game::GetLocalPlayer();
 					if (Mem::IsValid(LocalPlayer))
 					{
-						CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-						if (Mem::IsValid(LPSoldier) || Mem::IsValid(LocalPlayer->GetCurrentVehicle()))
+						ClientSoldierEntity* LPSoldier = LocalPlayer->getSoldier();
+						if (Mem::IsValid(LPSoldier) || Mem::IsValid(LocalPlayer->getVehicle()))
 						{
 							static bool MainMenu = true;
 							static bool LogOpened = true;
@@ -112,17 +112,17 @@ void DX11Renderer::DX11RenderScene()
 
 				if (Features::ESP)
 				{
-					CEntity* LocalPlayer = Game::GetLocalPlayer();
-					if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
+					ClientEntity* LocalPlayer = Game::GetLocalPlayer();
+					if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->getSoldier()))
 					{
-						CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-						if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
+						ClientSoldierEntity* LPSoldier = LocalPlayer->getSoldier();
+						if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction)) || (Mem::IsValid(LocalPlayer->getVehicle())))
 						{
 							if (Features::ShowFOV)
 								DrawCircle(ScreenSX / 2.f, ScreenSY / 2.f, Color(0, 255, 255, 255), Aimbot::FOV, 25);
 
 							//PLAYERS
-							CEntityList* EntityList = Game::GetEntityList();
+							ClientEntityList* EntityList = Game::GetEntityList();
 							ClientPlayerManager* PlayerManager = Game::GetClientPlayerManager();
 
 							/*if (Mem::IsValid(PlayerManager))
@@ -152,23 +152,23 @@ void DX11Renderer::DX11RenderScene()
 							if (Mem::IsValid(EntityList))
 							{
 								std::ofstream outputFile;
-								outputFile.open(L"C:\\Users\\bestp\\Desktop\\log_ESP.log");
-								outputFile << "start" << std::endl;
+								//outputFile.open(L"C:\\Users\\bestp\\Desktop\\log_ESP.log");
+								//outputFile << "start" << std::endl;
 								for (int i = 0; i < 64; i++)
 								{
 									outputFile << i << " ===== " << std::endl;
 
-									CEntity* Ent = EntityList->GetEntity(i);
+									ClientEntity* Ent = EntityList->getEntity(i);
 									if (Mem::IsValid(Ent))
 									{
-										CSoldier* EntSoldier = Ent->GetSoldier();
-										outputFile << "CEntity->getSoldier() -- ok" << std::endl;
-										outputFile << "Is CSoldier valid: " << Mem::IsValid(EntSoldier) << std::endl;
+										ClientSoldierEntity* EntSoldier = Ent->getSoldier();
+										//outputFile << "CEntity->getSoldier() -- ok" << std::endl;
+										//outputFile << "Is CSoldier valid: " << Mem::IsValid(EntSoldier) << std::endl;
 										if (Mem::IsValid(EntSoldier)) {
-											outputFile << "Soldier Name: " << Ent->Name << std::endl;
-											outputFile << "Is HealthComponent valid: " << Mem::IsValid(EntSoldier->HealthComponent) << std::endl;
+											//outputFile << "Soldier Name: " << Ent->Name << std::endl;
+											//outputFile << "Is HealthComponent valid: " << Mem::IsValid(EntSoldier->HealthComponent) << std::endl;
 											if (Mem::IsValid(EntSoldier->HealthComponent)) {
-												outputFile << "HealthComponent HP: " <<  EntSoldier->HealthComponent->HP << std::endl;
+												//outputFile << "HealthComponent HP: " <<  EntSoldier->HealthComponent->HP << std::endl;
 											}
 										}
 
@@ -177,24 +177,24 @@ void DX11Renderer::DX11RenderScene()
 											Vector3 HeadPos;
 											if (!EntSoldier->GetBonePosition(HeadPos, 53))
 												continue; 
-											HeadPos = EntSoldier->GetPosition() + Vector3(0.f, 2.f, 0.f);
+											HeadPos = EntSoldier->getPosition() + Vector3(0.f, 2.f, 0.f);
 											outputFile << "HEAD: " << HeadPos.x << " " << HeadPos.y << " " << HeadPos.z << std::endl;
 
-											Vector3 FeetPos = EntSoldier->GetPosition();
+											Vector3 FeetPos = EntSoldier->getPosition();
 											Vector3 HeadSP;
 											Vector3 FeetSP;
 											float dist = 0.f;
 
-											dist = Vector3::Distance(FeetPos, LPSoldier->GetPosition());
+											dist = Vector3::Distance(FeetPos, LPSoldier->getPosition());
 											if (Game::W2S(HeadPos, HeadSP) && Game::W2S(FeetPos, FeetSP) && dist > 2.f && dist < Features::ESPDistance)
 											{
-												if (Ent->GetTeam() == LocalPlayer->GetTeam() && !Features::ESPShowFriends)
+												if (Ent->getTeam() == LocalPlayer->getTeam() && !Features::ESPShowFriends)
 													continue;
 
 												Color BoxColor = Color(255, 0, 255, 255);
 
 												bool Enemy = false, Visible = false;
-												if (Ent->GetTeam() != LocalPlayer->GetTeam())
+												if (Ent->getTeam() != LocalPlayer->getTeam())
 												{
 													Enemy = true;
 
@@ -339,19 +339,19 @@ void DX11Renderer::DX11RenderScene()
 											}
 										}
 									}
-									if (Mem::IsValid(Ent->GetCurrentVehicle()) && Features::ShowVehicles)
+									if (Mem::IsValid(Ent->getVehicle()) && Features::ShowVehicles)
 									{
 										TransformAABBStruct _AABB;
 										Vector3 minSP, maxSP, cor2SP, cor3SP, cor4SP, cor5SP, cor6SP, cor7SP, NameSP;
-										CVehicleEntity* Vehicle = Ent->GetCurrentVehicle();
+										ClientVehicleEntity* Vehicle = Ent->getVehicle();
 										Matrix _Transform;
 										Vehicle->GetTransform(&_Transform);
 										Vector3 Position = Vector3(_Transform.m[3][0], _Transform.m[3][1], _Transform.m[3][2]);
 										glm::vec3 glmPos = glm::vec3(Position.x, Position.y, Position.z);
-
+										
 										Color BoxColor = Color(255, 0, 255, 255);
 
-										if (Vehicle->GetTeam() != LocalPlayer->GetTeam())
+										if (Vehicle->getTeam() != LocalPlayer->getTeam())
 											BoxColor = Color(0, 255, 0, 255);
 										else
 											if (!Features::ESPShowFriends)
@@ -381,7 +381,7 @@ void DX11Renderer::DX11RenderScene()
 										max = glmPos + max * TransformMatrix;
 
 										Vector3 MyHeadPos;
-										LocalPlayer->GetSoldier()->GetBonePosition(MyHeadPos, HEAD);
+										LocalPlayer->getSoldier()->GetBonePosition(MyHeadPos, HEAD);
 
 										float dist = Vector3::Distance(Vector3(min.x, min.y, min.z), MyHeadPos);
 										if (dist >= 1.f && dist < Features::ESPDistance &&
@@ -471,7 +471,7 @@ DWORD DX11Renderer::InitDevice(HMODULE _DllModule, const wchar_t* HWNDTarget)
 	PresentHook->Hook();
 	DX11HookPresent = PresentHook->GetOriginal<D3D11PresentHook>();
 
-	pfh = new CVMTHookManager64((QWORD**)BorderInputNode::Get()->input_node);
+	pfh = new CVMTHookManager64((QWORD**)BorderInputNode::getInstance()->input_node);
 	PerFrameHook = (PerFrameHook_t)pfh->dwGetMethodAddress(3);
 	pfh->dwHookMethod((DWORD64)HookedPerFrame, 3);
 

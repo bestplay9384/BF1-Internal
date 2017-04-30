@@ -5,75 +5,154 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="FrostBite">
+      <UniqueIdentifier>{ca42c85d-eb8c-45e8-b88a-6755e8328903}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ec5cb177-16ca-4013-89e7-4491f609ab2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hacks">
+      <UniqueIdentifier>{ebb2504a-5b80-4df6-bf9c-8b185e0c577b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Aimbot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX11.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IHook.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameRenderer.h">
+      <Filter>FrostBite</Filter>
     </ClInclude>
     <ClInclude Include="IMem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="imgui.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameContext.h">
+      <Filter>FrostBite</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_internal.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="RenderView.h">
+      <Filter>FrostBite</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiDX11.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ClientPlayerManager.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientEntityList.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientEntity.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsManager.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="RayCaster.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="BorderInputNode.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientVehicleEntity.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientHealthComponent.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSoldierPrediction.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientAimEntity.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSoldierWeapon.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="SoldierWeaponData.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponFiringData.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponFiring.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="GunSwayData.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientWeapon.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSoldierEntity.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientActiveWeaponHandler.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSoldierWeaponsComponent.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="GFXUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BonesList.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="Aimbot.h">
+      <Filter>Hacks</Filter>
     </ClInclude>
     <ClInclude Include="Offsets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PolyHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SSCleaner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_rect_pack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_truetype.h">
-      <Filter>Header Files</Filter>
+      <Filter>Hacks</Filter>
     </ClInclude>
     <ClInclude Include="VMT.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="imconfig.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="stdafx.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="IHook.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiDX11.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PolyHook.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Purista.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Shaders.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\stdafx.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="SSCleaner.h">
+      <Filter>Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_rect_pack.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_textedit.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_truetype.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FiringFunctionData.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletEntityData.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSoldierAimingSimulation.h">
+      <Filter>FrostBite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +169,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IHook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IMem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">

@@ -57,23 +57,53 @@
 #include "imgui.h"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_PLACEMENT_NEW
-#include "imgui_internal.h"
-#include "ImGuiDX11.h"
 
 typedef DWORD64 QWORD;
+
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
+#include "GFXUtils.h"
+#include "imgui_internal.h"
+#include "ImGuiDX11.h"
+#include "Offsets.h"
 #include "Resources/Purista.h"
 #include "Resources/Shaders.h"
-
 #include "IMem.h"
 #include "IHook.h"
 #include "PolyHook.h"
 #include "SSCleaner.h"
 #include "VMT.h"
-#include "Offsets.h"
+
+// FrostBite dumped classes
+#include "BorderInputNode.h"
+#include "BonesList.h"
+#include "GunSwayData.h"
+#include "BulletEntityData.h"
+#include "FiringFunctionData.h"
+#include "WeaponFiringData.h"
+#include "WeaponFiring.h"
+#include "SoldierWeaponData.h"
+#include "ClientWeapon.h"
+#include "ClientSoldierWeapon.h"
+#include "ClientSoldierAimingSimulation.h"
+#include "ClientAimEntity.h"
+#include "ClientActiveWeaponHandler.h"
+#include "ClientSoldierWeaponsComponent.h"
+#include "ClientSoldierPrediction.h"
+#include "ClientVehicleEntity.h"
+#include "ClientSoldierEntity.h"
+#include "ClientEntity.h"
+#include "ClientEntityList.h"
+#include "ClientHealthComponent.h"
+#include "RenderView.h"
+#include "RayCaster.h"
+#include "PhysicsManager.h"
+#include "Level.h"
+#include "ClientPlayerManager.h"
+#include "GameContext.h"
+#include "GameRenderer.h"
 #include "Aimbot.h"
 #include "Game.h"
 #include "DX11.h"

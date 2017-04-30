@@ -1,0 +1,30 @@
+#pragma once
+
+enum eBones
+{
+	HEAD = 62, //
+	HIP = 249, //
+	STOMACH = 142, //
+	CHEST = 146, //
+	NECK = 50, //
+	RIGHT_FEMUR = 299, // 
+	RIGHT_KNEE = 295, //
+	RIGHT_SHINBONE = 290, //
+	RIGHT_MALLEOLUS = 290,
+	RIGHT_TIPTOE = 291, // 
+	RIGHT_SHOULDER = 164, //
+	RIGHT_BICEPS = 165, //
+	RIGHT_ELBOW = 169, //
+	RIGHT_ULNA = 170, //
+	RIGHT_HAND = 170, //
+	LEFT_FEMUR = 285, //
+	LEFT_KNEE = 286, // 
+	LEFT_SHINBONE = 276, //
+	LEFT_MALLEOLUS = 276,
+	LEFT_TIPTOE = 277,
+	LEFT_SHOULDER = 160, //
+	LEFT_BICEPS = 49, // 
+	LEFT_ELBOW = 14, //
+	LEFT_ULNA = 21, //
+	LEFT_HAND = 21, //
+};

@@ -3,8 +3,6 @@
 #ifndef IMEM_H
 #define IMEM_H
 
-#include "stdafx.h"
-
 typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef uintptr_t QWORD;

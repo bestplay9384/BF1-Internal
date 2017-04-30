@@ -146,25 +146,51 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Aimbot.h" />
+    <ClInclude Include="BonesList.h" />
+    <ClInclude Include="BorderInputNode.h" />
+    <ClInclude Include="BulletEntityData.h" />
+    <ClInclude Include="ClientAimEntity.h" />
+    <ClInclude Include="ClientEntity.h" />
+    <ClInclude Include="ClientEntityList.h" />
+    <ClInclude Include="ClientHealthComponent.h" />
+    <ClInclude Include="ClientPlayerManager.h" />
+    <ClInclude Include="ClientSoldierAimingSimulation.h" />
+    <ClInclude Include="ClientSoldierEntity.h" />
+    <ClInclude Include="ClientSoldierPrediction.h" />
+    <ClInclude Include="ClientSoldierWeapon.h" />
+    <ClInclude Include="ClientActiveWeaponHandler.h" />
+    <ClInclude Include="ClientSoldierWeaponsComponent.h" />
+    <ClInclude Include="ClientVehicleEntity.h" />
+    <ClInclude Include="ClientWeapon.h" />
     <ClInclude Include="DX11.h" />
+    <ClInclude Include="FiringFunctionData.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameContext.h" />
+    <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="GFXUtils.h" />
+    <ClInclude Include="GunSwayData.h" />
     <ClInclude Include="IHook.h" />
-    <ClInclude Include="imconfig.h" />
     <ClInclude Include="IMem.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="ImGuiDX11.h" />
     <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Offsets.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="PolyHook.h" />
+    <ClInclude Include="RayCaster.h" />
+    <ClInclude Include="RenderView.h" />
     <ClInclude Include="Resources\Purista.h" />
     <ClInclude Include="Resources\Shaders.h" />
-    <ClInclude Include="Resources\stdafx.h" />
+    <ClInclude Include="SoldierWeaponData.h" />
     <ClInclude Include="SSCleaner.h" />
     <ClInclude Include="stb_rect_pack.h" />
     <ClInclude Include="stb_textedit.h" />
     <ClInclude Include="stb_truetype.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="VMT.h" />
+    <ClInclude Include="WeaponFiring.h" />
+    <ClInclude Include="WeaponFiringData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
@@ -172,7 +198,6 @@
     <ClCompile Include="DX11.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IHook.cpp" />
-    <ClCompile Include="IMem.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="ImGuiDX11.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
