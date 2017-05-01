@@ -15,21 +15,45 @@ struct BulletDataSaved
 	bool instantHit;
 };
 
+struct RecoilSaved {
+	bool enabled = false;
+	float m_ShootingRecoilDecreaseScale; //0x03C8
+	float m_FirstShotNoZoomDispersionMultiplier; //0x03CC
+	float m_FirstShotZoomDispersionMultiplier; //0x03D0
+	float m_FirstShotRecoilMultiplier; //0x03D4
+	float m_PowerOfDispersionRandom; //0x03D8
+};
+
+struct BreathSaved {
+	bool enabled = false;
+	float num;
+};
+
 extern std::map<QWORD, SwayDataSaved> SwayData;
 extern std::map<QWORD, BulletDataSaved> BulletData;
+extern std::map<QWORD, RecoilSaved> RecoilData;
+extern std::map<QWORD, BreathSaved> BreathData;
 
 class ClientHealthComponent;
 
 class ClientSoldierEntity
 {
 public:
+
+
 	char pad0[0x1C0]; //0x0000
 	ClientHealthComponent* HealthComponent; //0x01C0
 	char pad1[0x3E0]; // 0x01C8
 	ClientSoldierPrediction* prediction; // 0x05A8
 	char pad2[0xA8]; // 0x05B0
+
+	//float authorativeYaw; // 0x05C4 - no need
+	//float authorativePitch; // 0x05FC - no need
+
 	ClientSoldierWeaponsComponent* weaponComponent; //0x0658 -- malo interesujacy
-	char pad33[0x18]; // 0x660
+	char pad3[8]; // 0x660
+	BreathControlHandler* breath; //0x0668
+	char pad4[8]; // 0x0670
 	ClientAimEntity* aim;  //0x0678
 	ClientSoldierWeapon* weapon; // 0x0680
 	char pad_0680[0x20]; //0x0688
@@ -48,7 +72,6 @@ public:
 
 	float GetBulletVelocity() {
 		return weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getWeaponFiring()->getWeaponFiringData()->getFiringFunctionData()->getBulletVelocity();
-		//return Mem::ReadPtr<float>({ (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getWeaponFiring()->getWeaponFiringData()->getFiringFunctionData()->getBulletVelocity() }, false);
 		//return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, false);
 	}
 
@@ -94,6 +117,75 @@ public:
 		//return Mem::ReadPtr<QWORD>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30 }, false);
 	}
 
+	void SetBreath(bool _state) {
+		QWORD Weapon = GetWeapon();
+
+		if (!Mem::IsValid(&Weapon))
+			return;
+
+
+		if (!BreathData[Weapon].enabled)
+		{
+			BreathData[Weapon].num = breath->m_Enabled; //Mem::ReadPtr<float>({ (QWORD)this, 0x668, 0x58 }, false);
+			BreathData[Weapon].enabled = true;
+		}
+
+		if (_state) // noBreath off
+		{
+			if (!BreathData[Weapon].enabled)
+				return;
+
+			breath->m_Enabled = BreathData[Weapon].num;
+			//Mem::WritePtr<float>({ (QWORD)this, 0x668, 0x58 }, BreathData[Weapon].num, false);
+
+		}
+		else // noBreath on
+		{
+			breath->m_Enabled = 0.0f;
+			//Mem::WritePtr<float>({ (QWORD)this, 0x668, 0x58 }, 0.0f, false);
+		}
+	}
+
+	void SetRecoil(bool _state) {
+
+		QWORD Weapon = GetWeapon();
+
+		if (!Mem::IsValid(&Weapon))
+			return;
+
+
+		if (!RecoilData[Weapon].enabled)
+		{
+			RecoilData[Weapon].m_ShootingRecoilDecreaseScale = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_ShootingRecoilDecreaseScale;
+			RecoilData[Weapon].m_FirstShotNoZoomDispersionMultiplier = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotNoZoomDispersionMultiplier;
+			RecoilData[Weapon].m_FirstShotZoomDispersionMultiplier = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotZoomDispersionMultiplier;
+			RecoilData[Weapon].m_FirstShotRecoilMultiplier = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotRecoilMultiplier;
+			RecoilData[Weapon].m_PowerOfDispersionRandom = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_PowerOfDispersionRandom;
+			RecoilData[Weapon].enabled = true;
+		}
+
+		if (_state) // noRecoil off
+		{
+			if (!RecoilData[Weapon].enabled)
+				return;
+
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_ShootingRecoilDecreaseScale = RecoilData[Weapon].m_ShootingRecoilDecreaseScale;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotNoZoomDispersionMultiplier = RecoilData[Weapon].m_FirstShotNoZoomDispersionMultiplier;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotZoomDispersionMultiplier = RecoilData[Weapon].m_FirstShotZoomDispersionMultiplier;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotRecoilMultiplier = RecoilData[Weapon].m_FirstShotRecoilMultiplier;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_PowerOfDispersionRandom = RecoilData[Weapon].m_PowerOfDispersionRandom;
+		}
+		else // noRecoil on
+		{
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_ShootingRecoilDecreaseScale = 100.0f;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotNoZoomDispersionMultiplier = 0.0f;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotZoomDispersionMultiplier = 0.0f;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotRecoilMultiplier = 0.0f;
+			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_PowerOfDispersionRandom = 0.0f;
+		}
+
+	}
+
 	void SetSpreadEnabled(bool _state)
 	{
 
@@ -117,7 +209,7 @@ public:
 			for (int i = 0; i < 0xFF; i++)
 			{
 				QWORD offset = (i * 0x4);
-				Mem::WritePtr<float>({ (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_Dispersion, offset }, 0.f, false);
+				Mem::WritePtr<float>({ (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_Dispersion, offset }, 0.0f, false);
 			}
 		}
 		else
@@ -193,6 +285,7 @@ public:
 
 	Vector3 GetAngles() { // dont know -- cant find offsets
 		//aim->getAuthorativeAiming()->
+		//return aim->getAuthorativeAiming()->m_pFpsAimer->m_yaw; --> float, used to be Vector3??
 		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x678, 0x1A8, 0x28, 0x24 }, false);
 	}
 
@@ -202,7 +295,7 @@ public:
 
 	Vector3 GetShootSpace() {
 		return (weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getClientWeapon()->getShootSpace()).Translation();
-		//return Mem::ReadPtr<Matrix>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A18, 0x40 }, false);
+		//return Mem::ReadPtr<Matrix>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A18, 0x40 }, false).Translation();
 	}
 
 	Vector3 GetSpawnOffset() {

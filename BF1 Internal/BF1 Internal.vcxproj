@@ -148,6 +148,7 @@
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="BonesList.h" />
     <ClInclude Include="BorderInputNode.h" />
+    <ClInclude Include="BreathControlHandler.h" />
     <ClInclude Include="BulletEntityData.h" />
     <ClInclude Include="ClientAimEntity.h" />
     <ClInclude Include="ClientEntity.h" />

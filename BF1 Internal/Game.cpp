@@ -8,7 +8,7 @@ bool Features::Aimbot = true;
 bool Features::ShowMenu = true;
 bool Features::ESPShowFriends = false;
 bool Features::ShowBones = true;
-bool Features::ShowVehicles = true;
+bool Features::ShowVehicles = false;
 bool Features::NoSway = false;
 bool Features::InstantHit = false;
 bool Features::ShowFOV = true;
@@ -16,11 +16,15 @@ bool Features::ShowHealth = true;
 bool Features::ShowName = true;
 bool Features::ShowDistance = true;
 bool Features::ShowESPBoxes = true;
+bool Features::Radar = false;
 float Features::ESPDistance = 999.f;
+bool Features::NoRecoil = false;
+bool Features::NoBreath = false;
 
 std::map<QWORD, SwayDataSaved> SwayData;
 std::map<QWORD, BulletDataSaved> BulletData;
-//std::map<CSoldier*, bool> VisibleEntities;
+std::map<QWORD, RecoilSaved> RecoilData;
+std::map<QWORD, BreathSaved> BreathData;
 
 Vector3 posos;
 

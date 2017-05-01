@@ -85,6 +85,7 @@ using namespace DirectX::SimpleMath;
 #include "WeaponFiringData.h"
 #include "WeaponFiring.h"
 #include "SoldierWeaponData.h"
+#include "BreathControlHandler.h"
 #include "ClientWeapon.h"
 #include "ClientSoldierWeapon.h"
 #include "ClientSoldierAimingSimulation.h"

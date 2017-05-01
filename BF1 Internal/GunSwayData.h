@@ -96,7 +96,9 @@ public:
 	GunSwayStanceTransition m_StandToCrouch; //0x02D4
 	GunSwayStanceZoomModifierData m_SuppressionModifierUnzoomed; //0x02F0
 	GunSwayStanceZoomModifierData m_SuppressionModifierZoomed; //0x0358
-	//Array<GunSwayModifierUnlock> m_ModifierUnlocks; //0x03C0 -- dont need it	char padx[8];
+	//Array<GunSwayModifierUnlock> m_ModifierUnlocks; //0x03C0 -- dont need it
+	char padx[8];
+
 	float m_ShootingRecoilDecreaseScale; //0x03C8
 	float m_FirstShotNoZoomDispersionMultiplier; //0x03CC
 	float m_FirstShotZoomDispersionMultiplier; //0x03D0

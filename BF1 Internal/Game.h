@@ -14,15 +14,17 @@ public:
 	static bool ESPShowFriends;
 	static bool ShowBones;
 	static bool ShowVehicles;
-	static bool NoSway;
-	static bool InstantHit;
 	static bool ShowFOV;
 	static bool ShowHealth;
 	static bool ShowName;
 	static bool ShowDistance;
 	static bool ShowESPBoxes;
 	static float ESPDistance;
-
+	static bool NoRecoil;
+	static bool NoBreath;
+	static bool NoSway;
+	static bool InstantHit;
+	static bool Radar;
 };
 
 class Game

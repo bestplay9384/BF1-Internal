@@ -35,16 +35,25 @@ void AimbotThread()
 						if (!IsAiming)
 						{
 							IsAiming = true;
+							if (Features::NoRecoil)
+								LPSoldier->SetRecoil(true);
+							if (Features::NoBreath)
+								LPSoldier->SetBreath(true);
 							if (Features::NoSway)
 								LPSoldier->SetSpreadEnabled(true);
 							if (Features::InstantHit)
 								LPSoldier->SetBulletData(true);
+							
 						}
 					}
 					if (!GetAsyncKeyState(0xA4) && !GetAsyncKeyState(VK_RBUTTON) && !GetAsyncKeyState(VK_LBUTTON) && IsAiming)
 					{
 						IsAiming = false;
 						ActualTarget = nullptr;
+						if (Features::NoRecoil)
+							LPSoldier->SetRecoil(false);
+						if (Features::NoBreath)
+							LPSoldier->SetBreath(false);
 						if (Features::NoSway)
 							LPSoldier->SetSpreadEnabled(false);
 						if (Features::InstantHit)

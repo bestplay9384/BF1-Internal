@@ -1,12 +1,18 @@
 #pragma once
+
+class FpsAimer {
+public:
+	char _0x0000[36];
+	float m_yaw; //0x0024 
+	float m_pitch; //0x0028 
+	char _0x002C[20];
+};//Size=0x0040
+
 class ClientSoldierAimingSimulation
 {
 public:
-	char _0x0000[16];
-	SoldierAimingSimulationData* m_pSoldierAimingSimulationData; //0x0010 [SoldierAimingSimulationData]
-	char _0x0018[24];
-	char padxxx[8];
-	//FpsAimer* m_pFpsAimer; //0x0030 Smart[SoldierAimAssistData]
+	char pad0[0x28];
+	FpsAimer* m_pFpsAimer; //0x0028 Smart[SoldierAimAssistData]
 	float m_yaw; //0x0038 
 	float m_pitch; //0x003C 
 	float m_aimYawTimer; //0x0040 
