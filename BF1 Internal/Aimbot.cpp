@@ -4,8 +4,8 @@ float GetAngleBetweenVectors3D(Vector3 v1, Vector3 v2);
 Vector3 CalculatePerfectTrajectory(Vector3 From, Vector3 To, Vector3 EntityVelocity, float BulletVelocity, float Gravity);
 
 float Aimbot::SmoothFactor = 0.035;
-float Aimbot::FOV = 20.f;
-float Aimbot::Distance = 100.f;
+float Aimbot::FOV = 40.f;
+float Aimbot::Distance = 300.f;
 int Aimbot::Bone = HEAD;
 int Aimbot::RetargetTimer = 200;
 bool Aimbot::RandomBone = false;

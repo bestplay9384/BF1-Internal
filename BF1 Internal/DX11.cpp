@@ -96,7 +96,7 @@ void DX11Renderer::DX11RenderScene()
 									ImGui::SliderInt("Retarget Timer", &Aimbot::RetargetTimer, 1.f, 1000);
 
 									const char* Bones[] = { "Head", "Chest", "Neck" };
-									static int BoneSelected = -1;
+									static int BoneSelected = 0;
 									ImGui::TextColored(ImColor(0, 255, 0), "Actual Bone: %i", Aimbot::Bone);
 									ImGui::Checkbox("Random Bone", &Aimbot::RandomBone);
 									if (ImGui::Combo("Bones", &BoneSelected, Bones, 3))
