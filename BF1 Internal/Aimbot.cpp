@@ -36,9 +36,9 @@ void AimbotThread()
 						{
 							IsAiming = true;
 							if (Features::NoRecoil)
-								LPSoldier->SetRecoil(true);
+								LPSoldier->SetRecoilEnabled(false);
 							if (Features::NoBreath)
-								LPSoldier->SetBreath(true);
+								LPSoldier->SetBreathEnabled(false);
 							if (Features::NoSway)
 								LPSoldier->SetSpreadEnabled(true);
 							if (Features::InstantHit)
@@ -50,10 +50,10 @@ void AimbotThread()
 					{
 						IsAiming = false;
 						ActualTarget = nullptr;
-						if (Features::NoRecoil)
-							LPSoldier->SetRecoil(false);
+					    if (Features::NoRecoil)
+							LPSoldier->SetRecoilEnabled(false);
 						if (Features::NoBreath)
-							LPSoldier->SetBreath(false);
+							LPSoldier->SetBreathEnabled(false);
 						if (Features::NoSway)
 							LPSoldier->SetSpreadEnabled(false);
 						if (Features::InstantHit)
@@ -95,7 +95,7 @@ void AimbotThread()
 									ClientSoldierEntity* EntSoldier = Ent->getSoldier();
 									if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && Mem::IsValid(EntSoldier->prediction))
 									{
-										if (Ent->getTeam() != LocalPlayer->getTeam() && !EntSoldier->m_Occluded && Aimbot::Bone >= 0 && EntSoldier->HealthComponent->HP >= 1.f)
+										if (Ent->getTeam() != LocalPlayer->getTeam() && !EntSoldier->IsOccluded() && Aimbot::Bone >= 0 && EntSoldier->HealthComponent->HP >= 1.f)
 										{
 											static const eBones RandBones[] = { HEAD, CHEST, HIP, STOMACH, NECK, RIGHT_FEMUR, LEFT_FEMUR, LEFT_KNEE, RIGHT_KNEE };
 											if (!Aimbot::RandomBone)
@@ -144,7 +144,8 @@ void AimbotThread()
 						}
 						if (NearestOne <= Aimbot::Distance && CurrentTarget)
 						{
-							if (Mem::IsValid(&Mem::ReadPtr<Vector3>({ (QWORD)LPSoldier, 0x678, 0x1A8, 0x24, 0x24 }, false)))
+							//Vector3 x = LPSoldier->aim->m_authorativeAiming->m_pFpsAimer->m_yaw;
+							if (Mem::IsValid(&Mem::ReadPtr<Vector3>({ (QWORD)LPSoldier, 0x668, 0x1A8, 0x24, 0x24 }, false)))
 							{
 								if (ActualTarget && CurrentTarget != ActualTarget)
 								{

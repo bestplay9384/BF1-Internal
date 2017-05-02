@@ -8,7 +8,7 @@ bool Features::Aimbot = true;
 bool Features::ShowMenu = true;
 bool Features::ESPShowFriends = false;
 bool Features::ShowBones = true;
-bool Features::ShowVehicles = false;
+bool Features::ShowVehicles = true;
 bool Features::NoSway = false;
 bool Features::InstantHit = false;
 bool Features::ShowFOV = true;
@@ -20,6 +20,7 @@ bool Features::Radar = false;
 float Features::ESPDistance = 999.f;
 bool Features::NoRecoil = false;
 bool Features::NoBreath = false;
+bool Features::Crosshair = false;
 
 std::map<QWORD, SwayDataSaved> SwayData;
 std::map<QWORD, BulletDataSaved> BulletData;

@@ -157,6 +157,12 @@
     <ClInclude Include="BreathControlHandler.h">
       <Filter>FrostBite</Filter>
     </ClInclude>
+    <ClInclude Include="ClientSpectator.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSpectatorList.h">
+      <Filter>FrostBite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

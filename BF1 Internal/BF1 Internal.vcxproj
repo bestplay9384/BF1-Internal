@@ -161,6 +161,8 @@
     <ClInclude Include="ClientSoldierWeapon.h" />
     <ClInclude Include="ClientActiveWeaponHandler.h" />
     <ClInclude Include="ClientSoldierWeaponsComponent.h" />
+    <ClInclude Include="ClientSpectator.h" />
+    <ClInclude Include="ClientSpectatorList.h" />
     <ClInclude Include="ClientVehicleEntity.h" />
     <ClInclude Include="ClientWeapon.h" />
     <ClInclude Include="DX11.h" />

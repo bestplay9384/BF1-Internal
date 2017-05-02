@@ -90,4 +90,8 @@ public:
 		tFunc testt = *(tFunc*)(*(QWORD*)this + 0x8);
 		return testt(this, text, from, to, hit, flag, PhysicsEntityList);
 	}
+	static RayCaster* Get()
+	{
+		return Mem::ReadPtr<RayCaster*>({ OFFSET_GAMECONTEXT, 0x30, 0x108, 0x88 }, true);
+	}
 };

@@ -21,15 +21,18 @@ class ClientEntity {
 		}
 
 		ClientSoldierEntity* getSoldier() {
-			return Mem::Read<ClientSoldierEntity*>((QWORD)&soldier);
+			return Mem::Read<ClientSoldierEntity*>((QWORD)this + 0x1D48);
+			//return Mem::Read<ClientSoldierEntity*>((QWORD)&soldier);
 		}
 
 		ClientVehicleEntity* getVehicle() {
-			return Mem::Read<ClientVehicleEntity*>((QWORD)&vehicle);
+			return Mem::Read<ClientVehicleEntity*>((QWORD)this + 0x1D38);
+			//return Mem::Read<ClientVehicleEntity*>((QWORD)&vehicle);
 		}
 
 		BYTE getTeam() {
-			return teamId;
+			return Mem::Read<BYTE>((QWORD)this + 0x1C34);
+			//return teamId;
 		}
 
 		QWORD getPlayerView() {

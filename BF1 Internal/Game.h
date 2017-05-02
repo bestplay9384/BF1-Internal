@@ -25,6 +25,7 @@ public:
 	static bool NoSway;
 	static bool InstantHit;
 	static bool Radar;
+	static bool Crosshair;
 };
 
 class Game
@@ -36,14 +37,18 @@ public:
 
 	static ClientEntity* GetLocalPlayer()
 	{
-		return GameContext::getInstance()->getClientPlayerManager()->getLocalPlayer();
-		//return Mem::Read<ClientEntity*>(Mem::Read<QWORD>(Mem::Read<QWORD>(OFFSET_GAMECONTEXT) + 0x68) + 0x578);
+		//return GameContext::getInstance()->getClientPlayerManager()->getLocalPlayer();
+		return Mem::Read<ClientEntity*>(Mem::Read<QWORD>(Mem::Read<QWORD>(OFFSET_GAMECONTEXT) + 0x68) + 0x578);
 	}
 
 	static ClientPlayerManager* GetClientPlayerManager()
 	{
-		return GameContext::getInstance()->getClientPlayerManager();
-		//return Mem::Read<ClientPlayerManager*>(Mem::Read<QWORD>(OFFSET_GAMECONTEXT) + 0x68);
+		//return GameContext::getInstance()->getClientPlayerManager();
+		return Mem::Read<ClientPlayerManager*>(Mem::Read<QWORD>(OFFSET_GAMECONTEXT) + 0x68);
+	}
+
+	static ClientSpectatorList* GetClientSpectatorsList() {
+		return Mem::Read<ClientSpectatorList*>(Mem::Read<QWORD>(Mem::Read<QWORD>(OFFSET_GAMECONTEXT) + 0x68) + 0x318);
 	}
 
 	static void ToggleGameCursor()
@@ -54,8 +59,8 @@ public:
 
 	static ClientEntityList* GetEntityList()
 	{
-		return GameContext::getInstance()->getClientPlayerManager()->getClientEntityList();
-		//return Mem::ReadPtr<CEntityList*>({ OFFSET_GAMECONTEXT, 0x68, 0x560 }, true);
+		//return GameContext::getInstance()->getClientPlayerManager()->getClientEntityList();
+		return Mem::ReadPtr<ClientEntityList*>({ OFFSET_GAMECONTEXT, 0x68, 0x560 }, true);
 	}
 
 	static bool W2S(const Vector3& WorldPosition, Vector3& _out)
@@ -64,8 +69,8 @@ public:
 		float mY = DX11->ScreenSY * 0.5f;
 
 		// ok
-		D3DXMATRIXA16 VPM = GameRenderer::getInstance()->getRenderView()->getGameRender();
-		//D3DXMATRIXA16 VPM = Mem::Read<D3DXMATRIXA16>(Mem::Read<QWORD>(Mem::Read<QWORD>(OFFSET_GAMERENDERER) + 0x60) + 0x460);
+		//D3DXMATRIXA16 VPM = GameRenderer::getInstance()->getRenderView()->getGameRender();
+		D3DXMATRIXA16 VPM = Mem::Read<D3DXMATRIXA16>(Mem::Read<QWORD>(Mem::Read<QWORD>(OFFSET_GAMERENDERER) + 0x60) + 0x460);
 
 		_out.z = VPM(0, 3) * WorldPosition.x + VPM(1, 3) * WorldPosition.y + VPM(2, 3) * WorldPosition.z + VPM(3, 3);
 		if (_out.z < 0.1f)

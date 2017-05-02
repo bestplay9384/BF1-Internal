@@ -39,17 +39,11 @@ class ClientHealthComponent;
 class ClientSoldierEntity
 {
 public:
-
-
 	char pad0[0x1C0]; //0x0000
 	ClientHealthComponent* HealthComponent; //0x01C0
 	char pad1[0x3E0]; // 0x01C8
 	ClientSoldierPrediction* prediction; // 0x05A8
 	char pad2[0xA8]; // 0x05B0
-
-	//float authorativeYaw; // 0x05C4 - no need
-	//float authorativePitch; // 0x05FC - no need
-
 	ClientSoldierWeaponsComponent* weaponComponent; //0x0658 -- malo interesujacy
 	char pad3[8]; // 0x660
 	BreathControlHandler* breath; //0x0668
@@ -62,62 +56,75 @@ public:
 	BYTE m_Occluded; //0x06AB
 	char pad_06AC[0x980 - 0x6AB]; //0x06AC
 
+	void resetHealth() {
+		Mem::WritePtr<float>({ (QWORD)this, 0x01C0, 0x20 }, 100.f, false);
+	}
+
 	Vector3 getPosition() {
-		return prediction->getPosition();
+		return Mem::Read<Vector3>(Mem::Read<QWORD>((QWORD)this + 0x5A8) + 0x60);
+	}
+
+	BYTE IsSprinting() {
+		return Mem::Read<BYTE>((QWORD)this + 0x06A8);
+	}
+
+	BYTE IsOccluded()
+	{
+			return Mem::Read<BYTE>((QWORD)this + 0x6AB);
 	}
 
 	Vector3 getVelocity() {
-		return prediction->getVelocity();
+		return Mem::Read<Vector3>(Mem::Read<QWORD>((QWORD)this + 0x5A8) + 0x80);
 	}
 
 	float GetBulletVelocity() {
-		return weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getWeaponFiring()->getWeaponFiringData()->getFiringFunctionData()->getBulletVelocity();
-		//return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, false);
 	}
 
 	void SetBulletVelocity(float _vel)
 	{
-		weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getWeaponFiring()->getWeaponFiringData()->getFiringFunctionData()->setBulletVelocity(_vel);
-		//Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, _vel, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, _vel, false);
 	}
 
 	float GetBulletGravity()
 	{
-		return weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getFiringFunctionData()->getBulletEntityData()->getGravity();
-		//return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
 	}
 
 	void SetBulletGravity(float _gravity)
 	{
-		weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getFiringFunctionData()->getBulletEntityData()->setGravity(_gravity);
-		//Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, _gravity, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, _gravity, false);
 	}
 
 	void SetInstantHit(BYTE _state)
 	{
-		weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getFiringFunctionData()->getBulletEntityData()->setInstantHit(_state);
-		//Mem::WritePtr<BYTE>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x181 }, _state, false);
+		Mem::WritePtr<BYTE>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x181 }, _state, false);
+	}
+
+	BYTE GetInstantHit() {
+		return Mem::ReadPtr<BYTE>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x181 }, false);
 	}
 
 	float GetTimeToLive()
 	{
-		return weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getFiringFunctionData()->getBulletEntityData()->getTimeToLive();
-		//return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, false);
 	}
 
 	void SetTimeToLive(float _time)
 	{
-		weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getFiringFunctionData()->getBulletEntityData()->setTimeToLive(_time);
-		//Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, _time, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x94 }, _time, false);
 	}
 
 	QWORD GetWeapon()
 	{
-		return (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData();
-		//return Mem::ReadPtr<QWORD>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30 }, false);
+		return Mem::ReadPtr<QWORD>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30 }, false);
 	}
 
-	void SetBreath(bool _state) {
+	float getBreath() {
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x668, 0x58 }, false);
+	}
+
+	void SetBreathEnabled(bool _state) {
 		QWORD Weapon = GetWeapon();
 
 		if (!Mem::IsValid(&Weapon))
@@ -126,7 +133,7 @@ public:
 
 		if (!BreathData[Weapon].enabled)
 		{
-			BreathData[Weapon].num = breath->m_Enabled; //Mem::ReadPtr<float>({ (QWORD)this, 0x668, 0x58 }, false);
+			BreathData[Weapon].num = Mem::ReadPtr<float>({ (QWORD)this, 0x668, 0x58 }, false);
 			BreathData[Weapon].enabled = true;
 		}
 
@@ -135,32 +142,70 @@ public:
 			if (!BreathData[Weapon].enabled)
 				return;
 
-			breath->m_Enabled = BreathData[Weapon].num;
-			//Mem::WritePtr<float>({ (QWORD)this, 0x668, 0x58 }, BreathData[Weapon].num, false);
+			Mem::WritePtr<float>({ (QWORD)this, 0x668, 0x58 }, BreathData[Weapon].num, false);
 
 		}
 		else // noBreath on
 		{
-			breath->m_Enabled = 0.0f;
-			//Mem::WritePtr<float>({ (QWORD)this, 0x668, 0x58 }, 0.0f, false);
+			Mem::WritePtr<float>({ (QWORD)this, 0x668, 0x58 }, 0.0f, false);
 		}
 	}
 
-	void SetRecoil(bool _state) {
+	float getShootingRecoilDecreaseScale() {
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03C8 }, false);
+	}
+
+	float getFirstShotNoZoomDispersionMultiplier() {
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03CC }, false);
+	}
+
+	float getFirstShotZoomDispersionMultiplier() {
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03D0 }, false);
+	}
+
+	float getFirstShotRecoilMultiplier() {
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03D4 }, false);
+	}
+
+	float getPowerOfDispersionRandoms() {
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03D8 }, false);
+	}
+
+	void setShootingRecoilDecreaseScale(float val) {
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03C8 }, val, false);
+	}
+
+	void setFirstShotNoZoomDispersionMultiplier(float val) {
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03CC }, val, false);
+	}
+
+	void setFirstShotZoomDispersionMultiplier(float val) {
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03D0 }, val, false);
+	}
+
+	void setFirstShotRecoilMultiplier(float val) {
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03D4 }, val, false);
+	}
+
+	void setPowerOfDispersionRandoms(float val) {
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x38, 0x03D8 }, val, false);
+	}
+
+	void SetRecoilEnabled(bool _state) {
 
 		QWORD Weapon = GetWeapon();
 
 		if (!Mem::IsValid(&Weapon))
 			return;
 
-
 		if (!RecoilData[Weapon].enabled)
 		{
-			RecoilData[Weapon].m_ShootingRecoilDecreaseScale = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_ShootingRecoilDecreaseScale;
-			RecoilData[Weapon].m_FirstShotNoZoomDispersionMultiplier = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotNoZoomDispersionMultiplier;
-			RecoilData[Weapon].m_FirstShotZoomDispersionMultiplier = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotZoomDispersionMultiplier;
-			RecoilData[Weapon].m_FirstShotRecoilMultiplier = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotRecoilMultiplier;
-			RecoilData[Weapon].m_PowerOfDispersionRandom = weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_PowerOfDispersionRandom;
+
+			RecoilData[Weapon].m_ShootingRecoilDecreaseScale = getShootingRecoilDecreaseScale();
+			RecoilData[Weapon].m_FirstShotNoZoomDispersionMultiplier = getFirstShotNoZoomDispersionMultiplier();
+			RecoilData[Weapon].m_FirstShotZoomDispersionMultiplier = getFirstShotZoomDispersionMultiplier();
+			RecoilData[Weapon].m_FirstShotRecoilMultiplier = getFirstShotRecoilMultiplier();
+			RecoilData[Weapon].m_PowerOfDispersionRandom = getPowerOfDispersionRandoms();
 			RecoilData[Weapon].enabled = true;
 		}
 
@@ -169,19 +214,19 @@ public:
 			if (!RecoilData[Weapon].enabled)
 				return;
 
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_ShootingRecoilDecreaseScale = RecoilData[Weapon].m_ShootingRecoilDecreaseScale;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotNoZoomDispersionMultiplier = RecoilData[Weapon].m_FirstShotNoZoomDispersionMultiplier;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotZoomDispersionMultiplier = RecoilData[Weapon].m_FirstShotZoomDispersionMultiplier;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotRecoilMultiplier = RecoilData[Weapon].m_FirstShotRecoilMultiplier;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_PowerOfDispersionRandom = RecoilData[Weapon].m_PowerOfDispersionRandom;
+			setShootingRecoilDecreaseScale(RecoilData[Weapon].m_ShootingRecoilDecreaseScale);
+			setFirstShotNoZoomDispersionMultiplier(RecoilData[Weapon].m_ShootingRecoilDecreaseScale);
+			setFirstShotZoomDispersionMultiplier(RecoilData[Weapon].m_FirstShotNoZoomDispersionMultiplier);
+			setFirstShotRecoilMultiplier(RecoilData[Weapon].m_FirstShotRecoilMultiplier);
+			setPowerOfDispersionRandoms(RecoilData[Weapon].m_PowerOfDispersionRandom);
 		}
 		else // noRecoil on
 		{
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_ShootingRecoilDecreaseScale = 100.0f;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotNoZoomDispersionMultiplier = 0.0f;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotZoomDispersionMultiplier = 0.0f;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_FirstShotRecoilMultiplier = 0.0f;
-			weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_PowerOfDispersionRandom = 0.0f;
+			setShootingRecoilDecreaseScale(100.0f);
+			setFirstShotNoZoomDispersionMultiplier(0.0f);
+			setFirstShotZoomDispersionMultiplier(0.0f);
+			setFirstShotRecoilMultiplier(0.0f);
+			setPowerOfDispersionRandoms(0.0f);
 		}
 
 	}
@@ -199,7 +244,7 @@ public:
 			for (int i = 0; i < 0xFF; i++)
 			{
 				QWORD offset = (i * 0x4);
-				SwayData[Weapon].Data.push_back(Mem::ReadPtr<float>({ (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_Dispersion, offset }, false));
+				SwayData[Weapon].Data.push_back(Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, false));
 			}
 			SwayData[Weapon].enabled = true;
 		}
@@ -209,7 +254,7 @@ public:
 			for (int i = 0; i < 0xFF; i++)
 			{
 				QWORD offset = (i * 0x4);
-				Mem::WritePtr<float>({ (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_Dispersion, offset }, 0.0f, false);
+				Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, 0.f, false);
 			}
 		}
 		else
@@ -220,8 +265,9 @@ public:
 			for (int i = 0; i < 0xFF; i++)
 			{
 				QWORD offset = (i * 0x4);
-				if (SwayData[Weapon].Data[i])
-					Mem::WritePtr<float>({ (QWORD)weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getGunSwayData()->m_Dispersion, offset }, SwayData[Weapon].Data[i], false);
+				if (SwayData[Weapon].Data[i]) {
+					Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x38, 0x10, offset }, SwayData[Weapon].Data[i], false);
+				}	
 			}
 		}
 
@@ -229,8 +275,7 @@ public:
 
 	unsigned int GetActiveSlot()
 	{
-		return weaponComponent->getActiveSlot();
-		//return Mem::ReadPtr<unsigned int>({ (QWORD)this, 0x658, 0x960 }, false);
+		return Mem::ReadPtr<unsigned int>({ (QWORD)this, 0x658, 0x960 }, false);
 	}
 
 	void SetBulletData(bool _state)
@@ -283,24 +328,19 @@ public:
 		return false;
 	}
 
-	Vector3 GetAngles() { // dont know -- cant find offsets
-		//aim->getAuthorativeAiming()->
-		//return aim->getAuthorativeAiming()->m_pFpsAimer->m_yaw; --> float, used to be Vector3??
+	Vector3 GetAngles() {
 		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x678, 0x1A8, 0x28, 0x24 }, false);
 	}
 
-	BOOLEAN SetAngles(Vector3 _angles) { // dont know -- cant find offsets
+	BOOLEAN SetAngles(Vector3 _angles) {
 		return Mem::WritePtr<Vector3>({ (QWORD)this, 0x678, 0x1A8, 0x28, 0x24 }, _angles, false);
 	}
 
 	Vector3 GetShootSpace() {
-		return (weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getClientWeapon()->getShootSpace()).Translation();
-		//return Mem::ReadPtr<Matrix>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A18, 0x40 }, false).Translation();
+		return Mem::ReadPtr<Matrix>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A18, 0x40 }, false).Translation();
 	}
 
 	Vector3 GetSpawnOffset() {
-		return weaponComponent->getActiveWeaponHandler()->getSoldierWeapon()->getSoldierWeaponData()->getWeaponFiringData()->getFiringFunctionData()->getSpawnOffset();
-		//return 0;
-		//return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x60 }, false);
+		return Mem::ReadPtr<Vector3>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x60 }, false);
 	}
 };

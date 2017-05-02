@@ -98,6 +98,8 @@ using namespace DirectX::SimpleMath;
 #include "ClientEntity.h"
 #include "ClientEntityList.h"
 #include "ClientHealthComponent.h"
+#include "ClientSpectator.h"
+#include "ClientSpectatorList.h"
 #include "RenderView.h"
 #include "RayCaster.h"
 #include "PhysicsManager.h"

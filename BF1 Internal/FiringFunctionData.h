@@ -11,7 +11,7 @@ public:
 	BulletEntityData* m_pBulletEntityData; //0x00C0 [BulletEntityData]
 	char _0x00C8[24];
 	__int32 m_numberOfBulletsPerShell; //0x00E0 
-	__int32 m_numberOfBulletsPerShot; //0x00E4 
+	float m_numberOfBulletsPerShot; //0x00E4 
 	__int32 m_numberOfBulletsPerBurst; //0x00E8 
 	char _0x00EC[4];
 	BYTE m_relativeTargetAiming; //0x00F0 
@@ -33,6 +33,22 @@ public:
 
 	Vector3 getSpawnOffset() {
 		return SpawnOffset;
+	}
+
+	float getNumberOfBulletsPerShot() {
+		return m_numberOfBulletsPerShot;
+	}
+
+	void setNumberOfBulletsPerShot(float val) {
+		m_numberOfBulletsPerShot = val;
+	}
+
+	float getRateOfFireForBurst() {
+		return m_RateOfFireForBurst;
+	}
+
+	void setRateOfFireForBurst(float val) {
+		m_RateOfFireForBurst = val;
 	}
 
 	float getBulletVelocity() {
